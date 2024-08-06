@@ -33,7 +33,7 @@ public class NewMatchController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String firstName = req.getParameter("first-name");
         String secondName = req.getParameter("second-name");
-        UUID uuid = ongoingMatchesService.newMatch(firstName, secondName);
+        UUID uuid = ongoingMatchesService.createMatchAndGetUUID(firstName, secondName);
         resp.sendRedirect("match-score?uuid=" + uuid);
     }
 }

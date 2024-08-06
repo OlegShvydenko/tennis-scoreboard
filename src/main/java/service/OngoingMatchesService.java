@@ -13,34 +13,31 @@ import java.util.UUID;
 
 public class OngoingMatchesService {
     private final IPlayerRepository playerRepository;
-    private final IMatchRepository matchRepository;
-
-    public OngoingMatchesService(IPlayerRepository playerRepository, IMatchRepository matchRepository) {
+    public OngoingMatchesService(IPlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
-        this.matchRepository = matchRepository;
     }
 
     public OngoingMatchesService() {
         this.playerRepository = new PlayerRepository();
-        this.matchRepository = new MatchRepository();
     }
-
-    public UUID newMatch(String firstName, String secondName){
-        Match match = new Match(getOrCreatePlayer(firstName), getOrCreatePlayer(secondName));
+    public UUID createMatchAndGetUUID(String firstName, String secondName){
         UUID uuid = createUUID();
-        MatchesStorageService.saveMatch(uuid, match);
+        MatchesStorageService.saveMatch(uuid, newMatch(firstName, secondName));
         return uuid;
+    }
+    private Match newMatch(String firstName, String secondName){
+        return new Match(getOrCreatePlayer(firstName), getOrCreatePlayer(secondName));
     }
     private UUID createUUID(){
         UUID uuid = UUID.randomUUID();
-        if (MatchesStorageService.checkKey(uuid)    ) uuid = createUUID();
+        if (MatchesStorageService.checkKey(uuid)) uuid = createUUID();
         return uuid;
     }
     private Player getOrCreatePlayer(String name){
         Player player = playerRepository.getPlayerByName(name);
         if (player == null) {
-            player = new Player(name);
-            playerRepository.addNewPlayer(player);
+            playerRepository.addNewPlayer(new Player(name));
+            player = playerRepository.getPlayerByName(name);
         }
         return player;
     }

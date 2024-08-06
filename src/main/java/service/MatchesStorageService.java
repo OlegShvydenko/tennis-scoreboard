@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class MatchesStorageService {
-    private static final Map<UUID, Match> matchesStorage = new HashMap<>();
+    private static Map<UUID, Match> matchesStorage = new HashMap<>();
     public static void saveMatch(UUID uuid, Match match){
         matchesStorage.put(uuid, match);
     }
