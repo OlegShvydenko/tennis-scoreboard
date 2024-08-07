@@ -1,18 +1,17 @@
 package persistence.repository;
 
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-import org.hibernate.query.Query;
-import persistence.entity.Match;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import persistence.entity.Player;
+import org.hibernate.query.Query;
+import persistence.entity.Match;
 import util.HibernateUtil;
 
+import java.util.Collections;
 import java.util.List;
 
+// TODO разделять логические части кода переходами строк во всех методах
+// TODO заменить все deprecated методы аналогами из документации, если доки нет выкачать с помощью идеи
+// TODO исправить все подсветы под кодом
 public class MatchRepository implements IMatchRepository {
 
     Session session;
@@ -27,19 +26,21 @@ public class MatchRepository implements IMatchRepository {
 
     @Override
     public void addNewMatch(Match match) {
+        // TODO без транзакций нельзя совершать операции записи/апдейта/удаления
+        // TODO здесь сохранение дублируется, удалить
         session.save(match);
         Transaction transaction = session.beginTransaction();
         session.persist(match);
         transaction.commit();
     }
-
+    // TODO ниже исправленный пример строгой типизации
     @Override
     public List<Match> getMatchesFromGiven(int from, int max) {
-        Query query = session.createQuery("from Match ");
+        Query<Match> query = session.createQuery("from Match ", Match.class);
         query.setFirstResult(from);
         query.setMaxResults(max);
         List<Match> list = query.list();
-        if (list == null || list.isEmpty()) return null;
+        if (list == null || list.isEmpty()) return Collections.emptyList();
         else return list;
     }
 

@@ -19,37 +19,51 @@ import java.util.Objects;
 
 @WebServlet("/matches")
 public class MatchesController extends HttpServlet {
+    // TODO удалить лишние зависимости (matchRepository)
     private final IMatchRepository matchRepository;
     private final IPlayerRepository playerRepository;
 
     public MatchesController(MatchRepository matchRepository, IPlayerRepository playerRepository) {
         this.matchRepository = matchRepository;
         this.playerRepository = playerRepository;
+        // TODO забей
+        MatchesBuilder.initTestData();
     }
 
     public MatchesController() {
         this.matchRepository = new MatchRepository();
         this.playerRepository = new PlayerRepository();
-        new MatchesBuilder();
+        // TODO забей
+        MatchesBuilder.initTestData();
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int page = Integer.parseInt(req.getParameter("page"));
-        String name = req.getParameter("filter_by_player_name");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        // TODO добавить адекватную обработку исключений и возврат сообщения об ошибке потребителю
+        try {
+            int page = Integer.parseInt(req.getParameter("page"));
+            String name = req.getParameter("filter_by_player_name");
+            // TODO ПРИ КАЖДОМ ЗАПРОСЕ СОЗДАЕТСЯ ЗАНОВО, ПОСЛЕ ЗАПРОСА УДАЛЯЕТСЯ, исправить на использование зависимости и инициализацию при инициализации контроллера
+            PaginationService paginationService = new PaginationService();
 
-        PaginationService paginationService = new PaginationService();
+            // TODO переместить весь код ниже до начала работы с request, при ошибке при валидации выкидывать исключение, которое будет обрабатываться в контроллере и отдавать ошибку на потребителя
+            if (!Objects.equals(name, "") && playerRepository.getPlayerByName(name) == null && name != null){
+                name = "";
+                req.setAttribute("message", "Игрок с таким именем не участвовал в матчах.");
+            }
+            int numberOfPages = paginationService.getNumberOfPages(name);
+            List<Match> matches = paginationService.getMatches(name, page);
 
-        if (!Objects.equals(name, "") && playerRepository.getPlayerByName(name) == null && name != null){
-            name = "";
-            req.setAttribute("message", "Игрок с таким именем не учавствовал в матчах.");
+            req.setAttribute("numberOfPages", numberOfPages);
+            req.setAttribute("matches", matches);
+            req.setAttribute("filter_by_player_name", name);
+            req.getRequestDispatcher("matches.jsp").forward(req, resp);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        int numberOfPages = paginationService.getNumberOfPages(name);
-        List<Match> matches = paginationService.getMatches(name, page);
-
-        req.setAttribute("numberOfPages", numberOfPages);
-        req.setAttribute("matches", matches);
-        req.setAttribute("filter_by_player_name", name);
-        req.getRequestDispatcher("matches.jsp").forward(req, resp);
     }
 }

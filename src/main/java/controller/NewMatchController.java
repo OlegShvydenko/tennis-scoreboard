@@ -23,12 +23,14 @@ public class NewMatchController extends HttpServlet {
         this.ongoingMatchesService = new OngoingMatchesService();
     }
 
+    // TODO разделять логические части кода переходами строк
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("new-match.jsp");
         requestDispatcher.forward(req, resp);
     }
-
+    // TODO Добавить try catch куска с sendRedirect
+    // TODO разделять логические части кода переходами строк
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String firstName = req.getParameter("first-name");

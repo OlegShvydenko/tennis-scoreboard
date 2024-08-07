@@ -36,3 +36,20 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/.idea/
+/.idea/dataSources/
+/.idea/sonarlint/
+/.idea/.gitignore
+/.idea/amplicode-jpa.xml
+/.idea/compiler.xml
+/.idea/dataSources.local.xml
+/.idea/dataSources.xml
+/.idea/encodings.xml
+/.idea/git_toolbox_blame.xml
+/.idea/jarRepositories.xml
+/.idea/jpa-buddy.xml
+/.idea/misc.xml
+/.idea/uiDesigner.xml
+/.idea/vcs.xml
+/.idea/webContexts.xml
+/.idea/workspace.xml

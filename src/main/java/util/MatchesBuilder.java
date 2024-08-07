@@ -9,25 +9,18 @@ import persistence.repository.PlayerRepository;
 
 import java.util.Objects;
 import java.util.Random;
-
+// TODO такие вещи делаются с помощью миграций в бд
 public class MatchesBuilder {
-    IPlayerRepository playerRepository;
-    IMatchRepository matchRepository;
-    private final String[] namesOfPlayers = {"Alex", "Bob", "Peter", "Steve", "Dave", "Alan"};
+    private static IPlayerRepository playerRepository = new PlayerRepository();
+    private static IMatchRepository matchRepository = new MatchRepository();
+    private static final String[] namesOfPlayers = {"Alex", "Bob", "Peter", "Steve", "Dave", "Alan"};
 
-    public MatchesBuilder(PlayerRepository playerRepository, MatchRepository matchRepository) {
-        this.playerRepository = playerRepository;
-        this.matchRepository = matchRepository;
-    }
-
-    public MatchesBuilder() {
-        this.playerRepository = new PlayerRepository();
-        this.matchRepository = new MatchRepository();
+    public static void initTestData() {
         createPlayers();
         createRandomMatches(16);
     }
 
-    private void createRandomMatches(int numberOfMatches) {
+    private static void createRandomMatches(int numberOfMatches) {
         for (int i = 0; i < numberOfMatches; i++) {
             String name = getRandomName();
             String otherName = getRandomName();
@@ -42,11 +35,11 @@ public class MatchesBuilder {
         }
     }
 
-    private String getRandomName() {
+    private static String getRandomName() {
         return namesOfPlayers[new Random().nextInt(namesOfPlayers.length)];
     }
 
-    private void createPlayers() {
+    private static void createPlayers() {
         for (String namesOfPlayer : namesOfPlayers) {
             Player player = new Player(namesOfPlayer);
             playerRepository.addNewPlayer(player);

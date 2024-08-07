@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+// TODO переименовать в MatchesStorage
+// TODO использование названия сущности в методах, которые с ней работают излишне, из названия класса и так понятно, что за сущность хранит и с какой работает этот класс
 public class MatchesStorageService {
     private static Map<UUID, Match> matchesStorage = new HashMap<>();
     public static void saveMatch(UUID uuid, Match match){

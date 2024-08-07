@@ -2,6 +2,7 @@ package model;
 
 import util.Pair;
 
+// TODO класс простой поэтому можно попробовать использовать record
 public class MatchScore {
     private Pair score;
     private Pair point;

@@ -1,17 +1,16 @@
 package persistence.repository;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.ParameterExpression;
-import jakarta.persistence.criteria.Root;
-import persistence.entity.Player;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import persistence.entity.Player;
 import util.HibernateUtil;
 
 import java.util.List;
 
+// TODO разделять логические части кода переходами строк во всех методах
+// TODO заменить все deprecated методы аналогами из документации, если доки нет выкачать с помощью идеи
+// TODO исправить все подсветы под кодом
 public class PlayerRepository implements IPlayerRepository {
     Session session;
 
@@ -25,6 +24,8 @@ public class PlayerRepository implements IPlayerRepository {
 
     @Override
     public void addNewPlayer(Player player) {
+        // TODO без транзакций нельзя совершать операции записи/апдейта/удаления
+        // TODO здесь сохранение дублируется, удалить
         session.save(player);
         Transaction transaction = session.beginTransaction();
         session.persist(player);

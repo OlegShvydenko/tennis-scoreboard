@@ -4,13 +4,11 @@ import model.MatchScore;
 import util.Pair;
 import util.PointWinner;
 
-import java.util.HashMap;
-import java.util.Map;
-
+// TODO разделить код по логике пробелами
 public class MatchScoreCalculationService {
-    private final MatchScore matchScore;
+    private static final int[] SCORE_COMPLIANCE = new int[]{0, 15, 30, 40};
 
-    private final int[] scoreCompliance = new int[]{0, 15, 30, 40};
+    private final MatchScore matchScore;
 
     public MatchScoreCalculationService(MatchScore matchScore) {
         this.matchScore = matchScore;
@@ -62,7 +60,7 @@ public class MatchScoreCalculationService {
         pair.first(0);
         pair.second(0);
     }
-
+    // TODO вынести в общий метод, добавить новый аргумент Enum с value и назвать их по смыслу, переименовать общий метод на checkState
     private boolean checkPoint(Pair pair) {
         return ((pair.first() > 3 || pair.second() > 3) && Math.abs(pair.first() - pair.second()) > 1);
     }
@@ -81,9 +79,9 @@ public class MatchScoreCalculationService {
 
     private void setUpScore(Pair point, Pair score) {
         if (point.first() > 3) score.first(40);
-        else score.first(scoreCompliance[point.first()]);
+        else score.first(SCORE_COMPLIANCE[point.first()]);
         if (point.second() > 3) score.second(40);
-        else score.second(scoreCompliance[point.second()]);
+        else score.second(SCORE_COMPLIANCE[point.second()]);
     }
 
 }

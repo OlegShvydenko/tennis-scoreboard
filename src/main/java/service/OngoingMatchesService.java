@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+// TODO разделить код по логике пробелами
 public class OngoingMatchesService {
     private final IPlayerRepository playerRepository;
     public OngoingMatchesService(IPlayerRepository playerRepository) {
@@ -25,6 +26,8 @@ public class OngoingMatchesService {
         MatchesStorageService.saveMatch(uuid, newMatch(firstName, secondName));
         return uuid;
     }
+
+    // TODO переименовать в createNew
     private Match newMatch(String firstName, String secondName){
         return new Match(getOrCreatePlayer(firstName), getOrCreatePlayer(secondName));
     }

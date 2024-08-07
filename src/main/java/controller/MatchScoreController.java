@@ -18,16 +18,18 @@ import java.util.UUID;
 
 @WebServlet("/match-score")
 public class MatchScoreController extends HttpServlet {
-
+    // TODO разделять логические части кода переходами строк, пример ниже
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
+
         Match match = MatchesStorageService.getMatchByUUID(uuid);
+
         req.setAttribute("match", match);
         req.setAttribute("uuid", uuid);
         req.getRequestDispatcher("match-score.jsp").forward(req, resp);
     }
-
+    // TODO разделять логические части кода переходами строк
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
@@ -37,6 +39,7 @@ public class MatchScoreController extends HttpServlet {
         MatchScore matchScore = match.getMatchScore();
         MatchScoreCalculationService calculationService = new MatchScoreCalculationService(matchScore);
         calculationService.updateMatchScore(pointWinner);
+        // TODO ПРИ КАЖДОМ ЗАПРОСЕ СОЗДАЕТСЯ ЗАНОВО, ПОСЛЕ ЗАПРОСА УДАЛЯЕТСЯ, исправить на использование зависимости и инициализацию при инициализации контроллера
         FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
         if (matchScore.isGameOver()) finishedMatchesPersistenceService.finishMatch(uuid, pointWinner);
         req.setAttribute("match", match);
