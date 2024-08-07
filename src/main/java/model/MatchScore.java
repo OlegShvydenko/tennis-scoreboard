@@ -7,7 +7,6 @@ public class MatchScore {
     private Pair point;
     private Pair set;
     private Pair game;
-    private Pair match;
     private boolean tieBreak;
     private boolean gameOver;
 
@@ -16,7 +15,6 @@ public class MatchScore {
         this.point = new Pair();
         this.set = new Pair();
         this.game = new Pair();
-        this.match = new Pair();
         this.tieBreak = false;
         this.gameOver = false;
     }
@@ -51,14 +49,6 @@ public class MatchScore {
 
     public void setGame(Pair game) {
         this.game = game;
-    }
-
-    public Pair getMatch() {
-        return match;
-    }
-
-    public void setMatch(Pair match) {
-        this.match = match;
     }
 
     public boolean isTieBreak() {

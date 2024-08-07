@@ -1,14 +1,16 @@
 package service;
 
 import model.MatchScore;
-import persistence.entity.Match;
 import util.Pair;
 import util.PointWinner;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MatchScoreCalculationService {
     private final MatchScore matchScore;
+
+    private final int[] scoreCompliance = new int[]{0, 15, 30, 40};
 
     public MatchScoreCalculationService(MatchScore matchScore) {
         this.matchScore = matchScore;
@@ -16,31 +18,38 @@ public class MatchScoreCalculationService {
 
     public void updateMatchScore(PointWinner pointWinner) {
         if (!matchScore.isTieBreak()) {
-            changePair(matchScore.getPoint(), pointWinner);
-            if (checkPoint(matchScore.getPoint())) {
-                changePair(matchScore.getGame(), pointWinner);
-                resetPair(matchScore.getPoint());
-                resetPair(matchScore.getScore());
-            }
-            matchScore.setTieBreak(checkTieBreak(matchScore.getGame()));
-            if (checkGame(matchScore.getGame())) {
-                changePair(matchScore.getSet(), pointWinner);
-                resetPair(matchScore.getGame());
-            }
-
-        }
-        else {
-            resetPair(matchScore.getPoint());
-            changePair(matchScore.getPoint(), pointWinner);
-            if (checkGame(matchScore.getScore())){
-                changePair(matchScore.getSet(), pointWinner);
-                resetPair(matchScore.getPoint());
-                resetPair(matchScore.getGame());
-                matchScore.setTieBreak(false);
-            }
+            updateGameScore(pointWinner);
+        } else {
+            updateTieBreakScore(pointWinner);
         }
         if (checkSet(matchScore.getSet())) {
             matchScore.setGameOver(true);
+        }
+    }
+
+    private void updateGameScore(PointWinner pointWinner) {
+        changePair(matchScore.getPoint(), pointWinner);
+        if (checkPoint(matchScore.getPoint())) {
+            changePair(matchScore.getGame(), pointWinner);
+            resetPair(matchScore.getPoint());
+            resetPair(matchScore.getScore());
+        }
+        if (checkGame(matchScore.getGame())) {
+            changePair(matchScore.getSet(), pointWinner);
+            resetPair(matchScore.getGame());
+        }
+        setUpScore(matchScore.getPoint(), matchScore.getScore());
+        matchScore.setTieBreak(checkTieBreak(matchScore.getGame()));
+    }
+
+    private void updateTieBreakScore(PointWinner pointWinner) {
+        //resetPair(matchScore.getPoint());
+        changePair(matchScore.getPoint(), pointWinner);
+        if (checkGame(matchScore.getPoint())) {
+            changePair(matchScore.getSet(), pointWinner);
+            resetPair(matchScore.getPoint());
+            resetPair(matchScore.getGame());
+            matchScore.setTieBreak(false);
         }
     }
 
@@ -70,7 +79,11 @@ public class MatchScoreCalculationService {
         return (pair.first() == 6) && (pair.second() == 6);
     }
 
-    private void updateScore(Match match) {
-
+    private void setUpScore(Pair point, Pair score) {
+        if (point.first() > 3) score.first(40);
+        else score.first(scoreCompliance[point.first()]);
+        if (point.second() > 3) score.second(40);
+        else score.second(scoreCompliance[point.second()]);
     }
+
 }

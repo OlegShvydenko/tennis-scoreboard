@@ -5,7 +5,9 @@ import persistence.entity.Match;
 import java.util.List;
 
 public interface IMatchRepository {
-    List<Match> getAllMatches();
-    void saveMatch(Match match);
-    List<Match> getMatchesByPlayerName();
+    List<Match> getMatchesFromGiven(int from, int max);
+    void addNewMatch(Match match);
+    List<Match> getMatchesFromGivenWherePlayer(String name, int from, int max);
+    int getNumberOfMatches();
+    int getNumberOfMatchesWherePlayer(String name);
 }

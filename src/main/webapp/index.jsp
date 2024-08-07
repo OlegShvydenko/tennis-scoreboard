@@ -6,5 +6,8 @@
     </head>
     <body class="sheet">
         <jsp:include page="top-panel.html" />
+        <div class="start-form">
+            Чтобы начать подсчет очков, нажмите "Новый матч" на верхней панели
+        </div>
     </body>
 </html>
