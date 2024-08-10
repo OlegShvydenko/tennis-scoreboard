@@ -1,53 +1,53 @@
-package model;
+package service.model;
 
 import util.Pair;
 
 public class MatchScore {
-    private Pair score;
-    private Pair point;
-    private Pair set;
-    private Pair game;
+    private Pair<Integer> score;
+    private Pair<Integer> point;
+    private Pair<Integer> set;
+    private Pair<Integer> game;
     private boolean tieBreak;
     private boolean gameOver;
 
     public MatchScore() {
-        this.score = new Pair();
-        this.point = new Pair();
-        this.set = new Pair();
-        this.game = new Pair();
+        this.score = new Pair<>(0, 0);
+        this.point = new Pair<>(0, 0);
+        this.set = new Pair<>(0, 0);
+        this.game = new Pair<>(0, 0);
         this.tieBreak = false;
         this.gameOver = false;
     }
 
-    public Pair getScore() {
+    public Pair<Integer> getScore() {
         return score;
     }
 
-    public void setScore(Pair score) {
+    public void setScore(Pair<Integer> score) {
         this.score = score;
     }
 
-    public Pair getPoint() {
+    public Pair<Integer> getPoint() {
         return point;
     }
 
-    public void setPoint(Pair point) {
+    public void setPoint(Pair<Integer> point) {
         this.point = point;
     }
 
-    public Pair getSet() {
+    public Pair<Integer> getSet() {
         return set;
     }
 
-    public void setSet(Pair set) {
+    public void setSet(Pair<Integer> set) {
         this.set = set;
     }
 
-    public Pair getGame() {
+    public Pair<Integer> getGame() {
         return game;
     }
 
-    public void setGame(Pair game) {
+    public void setGame(Pair<Integer> game) {
         this.game = game;
     }
 

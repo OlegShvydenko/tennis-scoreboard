@@ -2,17 +2,15 @@ package service;
 
 import persistence.entity.Match;
 import persistence.entity.Player;
-import persistence.repository.IMatchRepository;
 import persistence.repository.IPlayerRepository;
-import persistence.repository.MatchRepository;
 import persistence.repository.PlayerRepository;
+import service.model.MatchesStorage;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class OngoingMatchesService {
     private final IPlayerRepository playerRepository;
+
     public OngoingMatchesService(IPlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
     }
@@ -20,20 +18,24 @@ public class OngoingMatchesService {
     public OngoingMatchesService() {
         this.playerRepository = new PlayerRepository();
     }
-    public UUID createMatchAndGetUUID(String firstName, String secondName){
+
+    public UUID createMatchAndGetUUID(String firstName, String secondName) {
         UUID uuid = createUUID();
-        MatchesStorageService.saveMatch(uuid, newMatch(firstName, secondName));
+        MatchesStorage.save(uuid, createNewMatch(firstName, secondName));
         return uuid;
     }
-    private Match newMatch(String firstName, String secondName){
+
+    private Match createNewMatch(String firstName, String secondName) {
         return new Match(getOrCreatePlayer(firstName), getOrCreatePlayer(secondName));
     }
-    private UUID createUUID(){
+
+    private UUID createUUID() {
         UUID uuid = UUID.randomUUID();
-        if (MatchesStorageService.checkKey(uuid)) uuid = createUUID();
+        if (MatchesStorage.checkKey(uuid)) uuid = createUUID();
         return uuid;
     }
-    private Player getOrCreatePlayer(String name){
+
+    private Player getOrCreatePlayer(String name) {
         Player player = playerRepository.getPlayerByName(name);
         if (player == null) {
             playerRepository.addNewPlayer(new Player(name));

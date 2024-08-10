@@ -1,10 +1,10 @@
 package service;
 
 
-import model.MatchScore;
+import service.model.MatchScore;
 import org.junit.jupiter.api.Test;
 import util.Pair;
-import util.PointWinner;
+import util.WinnerPoint;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,7 +15,7 @@ class MatchScoreCalculationServiceTest {
       MatchScore matchScore = new MatchScore();
       matchScore.setPoint(new Pair(3, 3));
       MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService(matchScore);
-      matchScoreCalculationService.updateMatchScore(PointWinner.FIRST);
+      matchScoreCalculationService.updateMatchScore(WinnerPoint.FIRST);
       assertEquals(matchScore.getGame().first(), 0);
   }
   @Test
@@ -23,7 +23,7 @@ class MatchScoreCalculationServiceTest {
       MatchScore matchScore = new MatchScore();
       matchScore.setPoint(new Pair(3, 0));
       MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService(matchScore);
-      matchScoreCalculationService.updateMatchScore(PointWinner.FIRST);
+      matchScoreCalculationService.updateMatchScore(WinnerPoint.FIRST);
       assertEquals(matchScore.getGame().first(), 1);
   }
   @Test
@@ -32,7 +32,7 @@ class MatchScoreCalculationServiceTest {
       matchScore.setPoint(new Pair(3, 0));
       matchScore.setGame(new Pair(5, 6));
       MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService(matchScore);
-      matchScoreCalculationService.updateMatchScore(PointWinner.FIRST);
+      matchScoreCalculationService.updateMatchScore(WinnerPoint.FIRST);
       assertTrue(matchScore.isTieBreak());
   }
 }

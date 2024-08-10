@@ -16,7 +16,7 @@
         <% if (name == null) name = ""; %>
         <form action="matches" method="GET">
             Найти матчи по имени игрока:
-            <input type="hidden" name="page" value="1">
+            <input type="hidden" name="page" value="0">
             <br><input type='text' name='filter_by_player_name'><br>
             <br><input type='submit' value='Найти'><br>
         </form>

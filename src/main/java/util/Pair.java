@@ -1,31 +1,27 @@
 package util;
 
-public class Pair {
-    private int first;
-    private int second;
+public class Pair<T> {
+    private T first;
+    private T second;
 
-    public Pair(int first, int second) {
+    public Pair(T first, T second) {
         this.first = first;
         this.second = second;
     }
-    public Pair(){
-        this.first = 0;
-        this.second = 0;
-    }
 
-    public int first() {
+    public T first() {
         return first;
     }
 
-    public void first(int first) {
+    public void first(T first) {
         this.first = first;
     }
 
-    public int second() {
+    public T second() {
         return second;
     }
 
-    public void second(int second) {
+    public void second(T second) {
         this.second = second;
     }
 }

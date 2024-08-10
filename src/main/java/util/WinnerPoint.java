@@ -1,6 +1,6 @@
 package util;
 
-public enum PointWinner {
+public enum WinnerPoint {
     FIRST,
     SECOND
 }

@@ -1,7 +1,7 @@
 package persistence.entity;
 
 import jakarta.persistence.*;
-import model.MatchScore;
+import service.model.MatchScore;
 
 @Entity
 @Table(name = "matches")

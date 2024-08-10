@@ -3,7 +3,8 @@ package service;
 import persistence.entity.Match;
 import persistence.repository.IMatchRepository;
 import persistence.repository.MatchRepository;
-import util.PointWinner;
+import service.model.MatchesStorage;
+import util.WinnerPoint;
 
 import java.util.UUID;
 
@@ -18,23 +19,13 @@ public class FinishedMatchesPersistenceService {
         this.matchRepository = matchRepository;
     }
 
-    public void finishMatch(UUID uuid, PointWinner pointWinner) {
-        setWinner(uuid, pointWinner);
-        saveMatchToDB(uuid);
-        deleteFinishedMatch(uuid);
-    }
-
-    private void setWinner(UUID uuid, PointWinner pointWinner) {
-        Match match = MatchesStorageService.getMatchByUUID(uuid);
-        if (pointWinner == PointWinner.FIRST) match.setWinner(match.getPlayerOne());
+    public void finishMatch(UUID uuid, WinnerPoint winnerPoint) {
+        Match match = MatchesStorage.getByUUID(uuid);
+        if (winnerPoint == WinnerPoint.FIRST) match.setWinner(match.getPlayerOne());
         else match.setWinner(match.getPlayerTwo());
-    }
 
-    private void saveMatchToDB(UUID uuid) {
-        matchRepository.addNewMatch(MatchesStorageService.getMatchByUUID(uuid));
-    }
+        matchRepository.addNewMatch(MatchesStorage.getByUUID(uuid));
 
-    private void deleteFinishedMatch(UUID uuid) {
-        MatchesStorageService.removeMatchByUUID(uuid);
+        MatchesStorage.removeByUUID(uuid);
     }
 }
